@@ -26,3 +26,6 @@ remotes::install_github("fbetz-geo/GroundwatermodelR")
 - [Tutorial on accessing existing data](https://fbetz-geo.github.io/GroundwatermodelR/articles/Analysis.html)
 
 - [Tutorial on making new predictions based on existing model](https://fbetz-geo.github.io/GroundwatermodelR/articles/PredictoR.html)
+
+## Reference
+Betz, F., Fischer, P. (in prep.): Assessing Spatial-Temporal Dynamics of Groundwater in a Restored Floodplain at the German Danube using Machine Learning. In Preparation.
