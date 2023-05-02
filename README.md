@@ -23,5 +23,6 @@ remotes::install_github("fbetz-geo/GroundwatermodelR")
 ```
 
 ## Tutorials
-[Tutorial on accessing existing data](https://fbetz-geo.github.io/GroundwatermodelR/articles/Analysis.html)
-[Tutorial on making new predictions based on existing model](https://fbetz-geo.github.io/GroundwatermodelR/articles/PredictoR.html)
+\itemize{
+\item [Tutorial on accessing existing data](https://fbetz-geo.github.io/GroundwatermodelR/articles/Analysis.html)
+\item [Tutorial on making new predictions based on existing model](https://fbetz-geo.github.io/GroundwatermodelR/articles/PredictoR.html)}
