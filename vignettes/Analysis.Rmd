@@ -1,0 +1,86 @@
+---
+title: "How to use GroundwatermodelR to conduct analysis with existing raster time series"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{How to use GroundwatermodelR to conduct analysis with existing raster time series}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+## Installing the GroundwatermodelR package
+This tutorial describes how to obtain a time series for specific locations from a raster time series using the GroundwatermodelR package. This package is a collection of functions to create spatial-temporal interpolations of groundwater level data (or similar) and work with the resulting raster data. The package is available from github and can easily be installed using the remotes package: 
+```{r setup}
+#library(remotes)
+#install_github("fbetz-geo/GroundwatermodelR")
+#library(GroundwatermodelR)
+```
+
+## Extracting data from existing raster time series
+One aim of analysis is often to assess groundwater level or groundwater distance data for a specific location, e.g. vegetation monitoring plots. Betz and Fischer, in prep. have presented the idea of 'virtual gauges' to extract a single time series from a raster time series to solve this. In the GroundwatermodelR package, the idea of virtual gauges is implemented in the extractR function. It takes a directory of with raster files (one file per time step) as input and extracts a single time series per location. In the simple case, the locations are given as points, in this case, the extraction is straightforward. 
+```{r}
+#Get the paths to the input raster files and locations of interest
+#raster_dir<-"C:/Users/Documents/Your_Data"
+#loc<-"C:/Users/Documents/Your_points.gpkg"
+
+#If you wish to return single txt files 
+#extractR(raster_dir=raster_dir,loc=loc,out_dir=out_dir,raster_type = "tif")
+```
+GroundwatermodelR offers two output formats for the data. Setting out_type="df" returns a data.frame containing the values of all locations in long format. 
+```{r}
+#df<-extractR(raster_dir=raster_dir,loc=loc,out_type="df",name_col="Name")
+#head(df)
+```
+Alternatively, it is also possible to return one csv file for each location containing the entire time series. This is convenient, if you consider to hand over the data to other users not experienced with R or if you simply wish to store the data for later use. The file names will include the name of the location taken from the name attribute column in the input locations.
+```{r}
+#Specify output directory
+#out_dir<-"C:/Users/Documents/Your_output_directory
+
+#Extract data and write to file
+#extractR(raster_dir=raster_dir,loc=loc,out_type="export",out_dir=out_dir,name_col="Name",dec=",")
+```
+
+### Dealing with polygons as area of interest
+Such area typically contains a number of pixels of the groundwater level raster dataset. In GroundwatermodelR, there are two options to deal with this case:
+
+#### 1 Obtaining one point within the area
+First, we could select one single point within each area (monitoring plot). In the easiest way, we use the centroid of a polygon, but we might also use the lowest or highest point in order to represent terrain conditions in a desired way. GroundwatermodelR offers the plotfindR function for this. For instance, we can find the lowest point in each vegetation monitoring plot in a vector dataset:
+```{r, message=FALSE, warning=FALSE}
+#Add sample data to the package and demonstrate loading!
+#dem<-
+#loc<-
+#plot(st_geometry(loc))
+
+#Use plotfindR function to get lowest point of each sampling plot
+#loc_points<-plotfindR(dem=dem,loc=loc,mode="lowest")
+#plot(st_geometry(loc_points))
+```
+Alternatively, plotfindR can also return the heighest point of the plot or simply the centroid. Reducing the polygon representation of sampling plots to points can significantly speed up the extraction of time series extraction from the raster time series when using the extractR function. Once polygons are converted to points, they can simply be used as input for the extractR function. 
+
+#### 2 Using the entire polygon and obtain statistics
+Alternatively, it is possible to use the polygons as input for extractR, the function will automatically recognize the input geometry type. In this case, extractR will return basic statistics (similar to summary()) for each timestep. This tends to be slower as it needs to extract a number of values per timestep and handle it. However, it allows to get more information out of the data. 
+```{r}
+#raster_dir<-"C:/Users/Documents/Your_Data"
+#out_dir<-"C:/Users/Documents/Your_output_data"
+#df<-extractR(raster_dir=raster_dir,loc=loc,out_dir=out_dir,)
+```
+Again, it is possible to use the extractR function to return a data.frame or to write the results to file (out_type="export").
+
+## Further processing of the results
+GroundwatermodelR includes some functionalities to further handle the resulting time series from the different locations. Please note, that this works only for single values per timestep and not with the summary statistic tables resulting from extractions with polygons. A basic analysis is the temporal aggregation of the times series, e.g. from daily to yearly. Currently, only yearly aggregation is supported. 
+```{r}
+#agg<-aggregatoR(df,time_col="Date",time_format="%Y-%m-%d",stat_col="gwl",statistic=mean,Summary=FALSE,season=FALSE)
+#head(agg)
+```
+The season argument declares whether the aggregatoR function takes the entire year as input or uses a seasonal subset only. This seasonal aggregation option can be of interest when analyzing e.g. groundwater levels during vegetation season. 
+
+```{r}
+#agg<-aggregatoR(df,time_col="Date",time_format="%Y-%m-%d",stat_col="gwl", season=TRUE, doy=c(74:180))
+#head(agg)
+```
+

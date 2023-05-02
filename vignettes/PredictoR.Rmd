@@ -1,0 +1,96 @@
+---
+title: "Predictions for new data based on existing model"
+author: "Florian Betz"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{PredictoR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+Once a trained model is available, it can be used for the prediction of new time steps. For model training, you can refer to the excellent [tutorials of the CAST package](https://hannameyer.github.io/CAST/).
+
+\newline
+
+First, we need to make sure, that GroundwatermodelR is available. It can be installed from github using the remotes package. 
+```{r setup}
+#library(remotes)
+#install_github(fbetz-geo/GroundwatermodelR)
+#library(GroundwatermodelR)
+```
+Yiu might have used the option to store a trained model to use it for later prediction or prediction on new time steps. Models trained by the 'caret' (and thus also by the CAST package can be stored as RDS file and re-loaded to new R sessions.
+```{r}
+#Read model from file
+#model<-readRDS(model_file)
+```
+Afterwards, the model can be used for new predictions. To avoid issues arising from predictions beyond the training space of the model, it is recommended to include an analysis of the area of applicability [(Meyer & Pebesma, 2021)](https://doi.org/10.1111/2041-210X.13650). In addition, I recommend to analyze the whether the temporal predictors for new predictions fall within the range of the value range of the predictors in the training period. If a model was saved using  saveRDS(), the loaded model will contain the training data as well. 
+```{r}
+#train_data<-model$trainData
+#head(train_data)
+```
+You can the agreement between training and new data easily visualizing the densities of the datasets. Let's merge the two datasets first:
+```{r}
+#Load required packages
+#library(tidyr)
+#library(dplyr)
+
+#old data
+#old_data<-model$trainingData %>% 
+  
+  #Select only columns with temporal (i.e. variable) predictors
+#  select(c("Discharge_Danube","Stage_OHB")) %>% 
+  
+  #Add column to mark data as initial training data
+#  mutate(Class="Training Data")
+
+#new data, make sure to have matching column names!
+#new_data<-read.table("New_data.txt",header = TRUE,sep="\t",dec=",") %>% 
+  
+  #Add column to mark as new data
+  #mutate(Class="New Prediction Data")
+
+#Combine the two data.frames
+#vis<-rbind(old_data,new_data) %>% 
+  
+  #Make it long format, cols refer to the columns with temporal predictors
+  #pivot_longer(cols=c("Discharge_Danube","Stage_OHB"))
+
+```
+Now, we have a data.frame with new and old data and can visualize the densities:
+```{r}
+#library(ggplot2)
+
+#Set up plot
+#p<-ggplot(aes(y=value,color=Class),data=vis)
+
+#Make plot
+#p+geom_density()+facet_wrap(~name,scale="free")
+
+```
+If the densities of the training and new prediction data agree sufficiently well, we can consider the new data to be in the training range of the model and go on with the prediction. For this task, we use the predictoR function from the GroundwatermodelR package.
+```{r}
+#Set the model path
+#model<-"Path/to/Your/Model"
+
+#Load spatial predictors
+#spatial_predictors<-rast("Your_Predictors.grd")
+
+#Load temporal predictors
+#temp_predictors<-read.table("Your_temp_predictors.txt",header=TRUE, sep="\t",dec=".")
+
+#Specify output directory
+#out_dir<-"Your/Output/Direction"
+
+#Apply predictoR function
+#predictoR(model=model,spat_predictors = spatial_predictors,temp_predictors =temp_predictors)
+
+```
+This will result in one new prediction for each time step in the temp_predictors dataset. Please note, that depending on the model used (usually Random Forest or similar), the prediction is a time consuming process and can have long run times even it uses parallel processing on all available cores by default. Therefore, information about the progress is included. 
+

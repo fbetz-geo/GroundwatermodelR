@@ -1,0 +1,28 @@
+Package: GroundwatermodelR
+Title: Collection of Functions for Spatial-Temporal Interpolation and Handling of Raster Time Series
+Version: 0.0.0.1
+Authors@R: 
+    person("Florian", "Betz", , "riverandscience@gmail.com", role = c("aut", "cre"))
+Description: GroundwatermodelR is a collection of functions for creating spatial-temporal interpolations of groundwater levels.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Imports: 
+    animation,
+    CAST,
+    dplyr,
+    ggplot2,
+    lubridate,
+    sf,
+    stringr,
+    terra,
+    tibble,
+    xts
+Depends: 
+    R (>= 2.10)
+LazyData: true

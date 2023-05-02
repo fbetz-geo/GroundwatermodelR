@@ -1,0 +1,36 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# GroundwatermodelR
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+GroundwatermodelR is a collection of functions to work with spatial-temporal interpolation of groundwater levels or similar data. For creating interpolation models, it relies on the machine learning workaround presented in the [CAST package](https://hannameyer.github.io/CAST/). 
+
+## Installation
+
+You can install the development version of GroundwatermodelR unsing the following two lines of code:
+
+``` r
+library(remotes)
+remotes::install_github("fbetz-geo/GroundwatermodelR")
+```
+
+## Tutorials
+Tutorials are currently under development and will be available [here](https://fbetz-geo.github.com//GroundwatermodelR). 
+
+## Reference
+Betz, F. & Fischer, P. (in prep.): Assessing spatial-temporal dynamics of groundwater in a restored floodplain at the German Danube using machine learning. In preparation for Water Resources Research.
