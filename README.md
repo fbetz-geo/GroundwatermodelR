@@ -23,5 +23,4 @@ remotes::install_github("fbetz-geo/GroundwatermodelR")
 ```
 
 ## Tutorials
-
-Tutorials will be available soon [here](https://fbetz-geo.github.io/GroundwatermodelR)
+[Tutorial on accessing existing data](https://fbetz-geo.github.io/GroundwatermodelR)
